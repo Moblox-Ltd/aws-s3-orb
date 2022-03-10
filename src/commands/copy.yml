@@ -11,6 +11,9 @@ parameters:
     description: If you wish to pass any additional arguments to the aws copy command (i.e. -sse)
     default: ''
     type: string
+  profile-name:
+    type: string
+    description: AWS IAM Profile to use for Deployment
   aws-access-key-id:
     type: env_var_name
     description: aws access key id override
@@ -28,6 +31,7 @@ steps:
       aws-access-key-id: << parameters.aws-access-key-id >>
       aws-secret-access-key: << parameters.aws-secret-access-key >>
       aws-region: << parameters.aws-region >>
+      profile-name: << parameters.profile-name >>
   - run:
       name: S3 Copy << parameters.from >> -> << parameters.to >>
-      command: "aws s3 cp << parameters.from >> << parameters.to >><<# parameters.arguments >> << parameters.arguments >><</ parameters.arguments >>"
+      command: "aws s3 cp << parameters.from >> << parameters.to >><<# parameters.arguments >> << parameters.arguments >><</ parameters.arguments >> --profile <<parameters.profile-name >>"
